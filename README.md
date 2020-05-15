@@ -1,0 +1,1 @@
+# LogicaTrab1
