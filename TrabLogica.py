@@ -47,6 +47,37 @@ def percorrerlista(lista):
                     lista += [novoramo2]
                     lista.remove(ramo)
                     break
+
+
+def verificaInput(texto): #ERRO!!!!!
+    letra=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o',
+          'p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E',
+          'F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U',
+          'V','W','Y','Z']
+    
+    simb=['(',')','>']
+    for el in texto: 
+        if el not in letra:#verifica simbolos permitidos
+            if el not in simb:
+                raise Exception('Formula contem simbolos não permitidos. Favor usar apenas letras, paranteses e ">" para implicação')
+    
+    for i in range(0,len(texto)+1):#verifica a boa formação
+        
+        if texto[i] in letra and texto[i+1]!=')':
+            if texto[i+1]!=">":
+                raise Exception('Formula mal formada')
+                
+        if texto[i] == "(" and texto[i+1]!='(':
+            if texto[i+1] not in letra:
+                raise Exception('Formula mal formada')
+                
+        if texto[i] == ")" and texto[i+1]!=')':
+            if texto[i+1] !='>':
+                raise Exception('Formula mal formada')
+                
+        if texto[i] == ">" and texto[i+1]!='(':
+            if texto[i+1] not in letra:
+                raise Exception('Formula mal formada')
                     
 lista = stringParser(string)
 listaderamos = []
