@@ -14,19 +14,47 @@ def stringParser(expr):
                 items.append(item)
         return items, False
     return _helper(iter(expr))[0]
-lista = stringParser(string)
-print(lista)
-listaderamos = []
-listaderamos += [[["F",lista[0]],["F",lista[-1]]]]
+def testalista(lista):
+    for ramo in lista:
+        for item in ramo:
+            #print(item)
+            if (isinstance(item[1],list)):
+                return False
+    return True
 def percorrerlista(lista):
-    for item in lista[0]:
-        print(item)
-        if (len(item[1]) != 2) and (item[0] == "F"):
-            teste = lista[0][:]
-            teste.remove(item)
-            teste += ["V",item[1][0]],["F",item[1][-1]]
-            lista.append(teste)
-            lista.remove(lista[0])
-            break
+    #print("lista: ",lista)
+    while testalista(lista) == False:
+        for ramo in lista:
+            #print("lista: ",lista)
+            #print("ramo: ",ramo)
+            for item in ramo:
+                #print("item: ",item)
+                if (isinstance(item[1],list)) and (item[0] == "F"):
+                    novoramo = ramo[:]
+                    novoramo.remove(item)
+                    novoramo += ["V",item[1][0]],["F",item[1][-1]]
+                    lista.append(novoramo)
+                    lista.remove(ramo)
+                    break
+                if (isinstance(item[1],list)) and (item[0] == "V"):
+                    novoramo = ramo[:]
+                    novoramo.remove(item)
+                    novoramo.append(["F",item[1][0]])
+                    lista.append(novoramo)
+                    novoramo2 = ramo[:]
+                    novoramo2.remove(item)
+                    novoramo2.append(["V",item[1][-1]])
+                    lista += [novoramo2]
+                    lista.remove(ramo)
+                    break
+                    
+lista = stringParser(string)
+listaderamos = []
+listaderamos += [[["V",lista[0]],["F",lista[-1]]]]
 percorrerlista(listaderamos)
-print(listaderamos)
+print("ramos:")
+for i in listaderamos:
+    print(i)
+
+
+ 
