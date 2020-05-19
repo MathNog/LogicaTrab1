@@ -1,4 +1,4 @@
-string = "(A.b).(b.c)"
+string = "((((a.b).(c.d)).d).(a.d))"
 def stringParser(expr):
     def _helper(iter):
         items = []
@@ -47,45 +47,26 @@ def percorrerlista(lista):
                     lista += [novoramo2]
                     lista.remove(ramo)
                     break
-
-
-def verificaInput(texto): #ERRO!!!!!
-    letra=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o',
-          'p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E',
-          'F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U',
-          'V','W','Y','Z']
+def encontracontraex(lista):
+    for ramo in lista:
+        valordict = {}
+        for obj in ramo:
+            if obj[1] in valordict:
+                if obj[0] != valordict[obj[1]]:
+                    lista.remove(ramo)
+            else:
+                valordict[obj[1]] = obj[0]
+    print("Inválido, contraexemplo:")
+    print([list(tupl) for tupl in {tuple(item) for item in lista[0] }])
+    return
     
-    simb=['(',')','>']
-    for el in texto: 
-        if el not in letra:#verifica simbolos permitidos
-            if el not in simb:
-                raise Exception('Formula contem simbolos não permitidos. Favor usar apenas letras, paranteses e ">" para implicação')
-    
-    for i in range(0,len(texto)+1):#verifica a boa formação
-        
-        if texto[i] in letra and texto[i+1]!=')':
-            if texto[i+1]!=">":
-                raise Exception('Formula mal formada')
-                
-        if texto[i] == "(" and texto[i+1]!='(':
-            if texto[i+1] not in letra:
-                raise Exception('Formula mal formada')
-                
-        if texto[i] == ")" and texto[i+1]!=')':
-            if texto[i+1] !='>':
-                raise Exception('Formula mal formada')
-                
-        if texto[i] == ">" and texto[i+1]!='(':
-            if texto[i+1] not in letra:
-                raise Exception('Formula mal formada')
-                    
 lista = stringParser(string)
+#print(lista)
 listaderamos = []
-listaderamos += [[["V",lista[0]],["F",lista[-1]]]]
+listaderamos += [[["V",lista[0][0]],["F",lista[0][-1]]]]
+#print(listaderamos)
 percorrerlista(listaderamos)
 print("ramos:")
 for i in listaderamos:
     print(i)
-
-
- 
+encontracontraex(listaderamos)
