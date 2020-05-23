@@ -55,7 +55,7 @@ def percorrerlista(lista):
                     lista.remove(ramo)
                     break
                 
-def encontracontraex(lista):
+def encontracontraex(lista): #funciona essa mudanca??? acho que sim
     for ramo in lista:
         valordict = {}
         for obj in ramo:
@@ -64,9 +64,10 @@ def encontracontraex(lista):
                     lista.remove(ramo)
             else:
                 valordict[obj[1]] = obj[0]
-    print("Inválido, contraexemplo:")
-    print([list(tupl) for tupl in {tuple(item) for item in lista[0] }])
-    return
+    
+    contraex=[list(tupl) for tupl in {tuple(item) for item in lista[0] }]
+    
+    return contraex #retorna a lista ao inve de printar
 
 
 
