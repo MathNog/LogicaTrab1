@@ -3,6 +3,6 @@
 ### Alunos: Henrique Soares e Matheus Nogueira
 
 ** Informações sobre a implementação do trabalho**
-- Linguagem utilizada: python
-- Biblioteca utilizadas: Tkinter
-  -padrão
+1. Linguagem utilizada: python
+2. Biblioteca utilizadas: Tkinter
+   - padrao
