@@ -1,77 +1,114 @@
 from tkinter import *
+from tkinter import messagebox
 from TrabLogica import *
 
-string = "((((a>b)>(c>d))>d)>(a>d))"
+#-----Variáveis Globais-------
 teste=''
 
+#-------Funções----------
 def verificaFormula(entradaLb,botaoGerar):
     global teste
+    
     teste=entradaLb.get()
-    #print(teste)
+    
     letra=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o',
           'p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E',
           'F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U',
           'V','W','Y','Z']
-    
     simb=['(',')','>']
-    for el in teste: 
-        if el not in letra:#verifica simbolos permitidos
+    
+    #verifica simbolos permitidos
+    for el in teste:
+        if el not in letra:
             if el not in simb:
                 entradaLb.delete(0,END)
                 entradaLb.focus_set()
-                print('Formula contem simbolos não permitidos. Favor usar apenas letras, paranteses e ">" para implicação')
+                messagebox.showinfo("", "Formula contem símbolos não permitidos. Usar apenas letras, parênteses e '>' para implicação")
         else:
             botaoGerar['state']=NORMAL
             botaoGerar.focus_set()
-    '''
-    for i in range(0,len(texto)+1):#verifica a boa formação
-        
-        if texto[i] in letra and texto[i+1]!=')':
-            if texto[i+1]!=">":
-                raise Exception('Formula mal formada')
-                
-        if texto[i] == "(" and texto[i+1]!='(':
-            if texto[i+1] not in letra:
-                raise Exception('Formula mal formada')
-                
-        if texto[i] == ")" and texto[i+1]!=')':
-            if texto[i+1] !='>':
-                raise Exception('Formula mal formada')
-                
-        if texto[i] == ">" and texto[i+1]!='(':
-            if texto[i+1] not in letra:
-                raise Exception('Formula mal formada')
-    '''
 
-def list2string(lista): #Arrumar no controle para exibir o contra exemplo
+    #começo e fim com parênteses
+    if teste[0]!='(' or teste[-1]!=')':
+        entradaLb.delete(0,END)
+        entradaLb.focus_set()
+        messagebox.showinfo("", "Fórmula precisa começar e terminar com parênteses")
+
+    for i in range(1,len(teste)-1):
+        if teste[i]== '>' and teste[i+1]==')':
+            entradaLb.delete(0,END)
+            entradaLb.focus_set()
+            messagebox.showinfo("", "Fórmula mal formada: '>' logo antes de ')'")
+
+        if teste[i] in letra and teste[i+1]in letra:
+            entradaLb.delete(0,END)
+            entradaLb.focus_set()
+            messagebox.showinfo("", "Fórmula mal formada: duas letras juntas ")
+
+        if teste[i] in letra and teste[i+1]=='(':
+            entradaLb.delete(0,END)
+            entradaLb.focus_set()
+            messagebox.showinfo("", "Fórmula mal formada: letra logo antes de '('")
+
+        if teste[i] =='(' and teste[i+1]=='>':
+            entradaLb.delete(0,END)
+            entradaLb.focus_set()
+            messagebox.showinfo("", "Fórmula mal formada: '(' logo antes de '>'")
+
+        
+
+    
+    
+def list2string(lista): 
     texto=''
     for el in lista:
-        texto+=el
-    return texto
+        for ele in el:
+            texto+=' '
+            texto+=ele
+        texto+=','
+    novo=''
+    for i in range (0,len(texto)-1): #retira ultima virgula
+        novo+=texto[i] 
+    return novo
 
 
-def controle(teste):
-    print(teste)
+def controle(teste):#função principal de controle da aplicação
+    global botaoGerar
+    var=StringVar()
+    
     lista = stringParser(teste)
-    #print(lista)
+    
     listaderamos = []
     listaderamos += [[["V",lista[0][0]],["F",lista[0][-1]]]]
-    #print(listaderamos)
+    
     percorrerlista(listaderamos)
     print("ramos:")
     for i in listaderamos:
         print(i)
     contraex = encontracontraex(listaderamos)
-    contra=list2string(contraex)#arrumar
+    print('ContraEx')
+    print(contraex)
+    contra=list2string(contraex)
+    var.set(contra)
+    print(contra)
+    
     #controla exibicao na janela
     if contraex!=[]:
         lbC1=Label(root,text="Fórmula Falsificavel. Contra exemplo:",width=40,anchor="nw")
-        lbC1.place(x=10,y=240)
-        lbC2=Label(root,text=contra,width=20,anchor='nw')
-        lbC1.place(x=10,y=250)
+        lbC1.place(x=10,y=310)
+        lbC2=Label(root,textvariable=var,width=20,anchor='nw')
+        lbC2.place(x=10,y=330)
     else:
-        lbD1=label(root,text='Fórmula Válida!',width=20,anchor='nw')
-        lbD1.place(x=10,y=240)
+        lbD1=Label(root,text='Fórmula Válida!',width=40,anchor='nw')
+        lbD1.place(x=10,y=310)
+        lbD2=Label(root,text='',width=20,anchor='nw')
+        lbD2.place(x=10,y=330)
+
+    #desabilita botao gerador de tableuax -> preciso sempre validar a formula antes de gerar
+    botaoGerar['state']=DISABLED
+
+
+#----------Tratamento da Interface Gráfica-----------
 
 
 #----Janela Principal---- OK!!!!
@@ -80,18 +117,26 @@ root=Tk()
 root.geometry('400x400')
 root.title("Tableaux Generator")
 
+
 #---Label para inserir fórmula--- OK!!!!
 
-lb=Label(root,text="Insira Fórmula:",width=12,anchor='nw')
+lb=Label(root,text="Insira Fórmula:",width=12,anchor='nw',font="Helvetica 10 bold")
 lb.place(x=150,y=10)
 entradaLb=Entry(root,width=60)
 entradaLb.place(x=10,y=40)
 entradaLb.focus_set()
 
+#-----Label para Informações--------
+lbInf=Label(root,text='Informação Importante:',width=20,anchor='nw',font="Helvetica 10 bold")
+lbInf.place(x=10,y=230)
+lbInf2=Label(root,text='A fórmula a ser validada precisa estar integralmente de acordo ',width=50,anchor='nw')
+lbInf2.place(x=10,y=250)
+lbInf3=Label(root,text='com a formalização da lógica proposicional.',width=40,anchor='nw')
+lbInf3.place(x=10,y=270)
 
 #-------Label para resultado------ 0K!!!
-lbRes=Label(root,text="Resultado do Tableaux:",width=20,anchor="nw")
-lbRes.place(x=10,y=230)
+lbRes=Label(root,text="Resultado do Tableaux:",width=20,anchor="nw",font="Helvetica 10 bold")
+lbRes.place(x=10,y=290)
 
 
 #----Botao Validar Fórmula---- OK!!!!
@@ -106,8 +151,7 @@ botaoGerar.place(x=150,y=120)
 botaoGerar.config(command=lambda:controle(teste))
 
 
-
-
 #----Loop----
-
 root.mainloop()
+
+

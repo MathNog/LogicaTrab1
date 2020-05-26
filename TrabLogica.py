@@ -54,7 +54,7 @@ def percorrerlista(lista):
                     lista += [novoramo2]
                     lista.remove(ramo)
                     break
-                
+'''                
 def encontracontraex(lista): #funciona essa mudanca??? acho que sim
     for ramo in lista:
         valordict = {}
@@ -67,11 +67,31 @@ def encontracontraex(lista): #funciona essa mudanca??? acho que sim
     
     contraex=[list(tupl) for tupl in {tuple(item) for item in lista[0] }]
     
-    return contraex #retorna a lista ao inve de printar
+    return contraex #retorna a lista ao inves de printar
 
+'''
 
+def encontracontraex(lista):
+    aux=[]#adicionar ramos fechados
+    for ramo in lista:
+        valordict = {}
+        for obj in ramo:
+            if obj[1] in valordict:
+                if obj[0] != valordict[obj[1]]:
+                    aux.append(ramo)
+            else:
+                valordict[obj[1]] = obj[0]
 
-
+    #comparar aux com lista, se iguais, todos os ramos fecharam
+    li_dif = [i for i in lista + aux if i not in lista or i not in aux]
+    if li_dif==[]:
+        print('Formula Valida')
+        contraex=[]
+    else:
+        print("Inválido, contraexemplo:")
+        contraex=([list(tupl) for tupl in {tuple(item) for item in lista[0] }])
+    
+    return contraex
 
 
 
