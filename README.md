@@ -3,6 +3,6 @@
 ### Alunos: Henrique Soares e Matheus Nogueira
 
 ** Informações sobre a implementação do trabalho**
-1. Linguagem utilizada: python
+1. Linguagem utilizada: Python3.8
 2. Biblioteca utilizadas: Tkinter
-   - padrao
+   - O Tkinter é uma biblioteca padrão de Python para interfaces gráficas. Sendo assim, caso já tenha o Python3.8, não deve ser necessário instalar a biblioteca
