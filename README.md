@@ -1,4 +1,4 @@
-# INF1009 - Lógica para Computação - PUC-Rio
+# INF1009 - Lógica para Computação - PUC-Rio (AINDA INCOMPLETO, FAVOR IGNORAR POR ENQUANTO - DISPONÍVEL A PARTIR DE 30/05)
 ## Trabalho 1 - Gerador de Tableuax para Lógica Proposicional
 ### Alunos: Henrique Soares e Matheus Nogueira
 #### Turma: 3WC
